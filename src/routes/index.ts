@@ -1,13 +1,15 @@
 import User from "./user";
 import Admin from "./admin";
 import Media from "./media";
-import Organisations from "./organisation";
+import Layout from "./layout";
+import Space from "./space";
 
 const Routes = [
     ...Admin,
     ...User,
     ...Media,
-    ...Organisations
+    ...Layout,
+    ...Space
 
   ];
   

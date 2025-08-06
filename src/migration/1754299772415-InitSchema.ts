@@ -79,10 +79,6 @@ export class InitSchema1754299772415 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "experience_attributes_attribute" ADD CONSTRAINT "FK_55cb0461ba1296e1963abfdc6e2" FOREIGN KEY ("attributeId") REFERENCES "attribute"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE "asset_tags_asset_tag" ADD CONSTRAINT "FK_dfcf518ac9124609be553928ed7" FOREIGN KEY ("assetId") REFERENCES "asset"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE "asset_tags_asset_tag" ADD CONSTRAINT "FK_f708c8b991f461fde9761c6ed58" FOREIGN KEY ("assetTagId") REFERENCES "asset_tag"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
-
-        await queryRunner.query(
-    `INSERT INTO "organisation" ("id", "createdAt", "updatedAt", "cognito_identity_id", "source_ip", "name", "can_delete") VALUES (DEFAULT, DEFAULT, DEFAULT, ' ','00.000.000.000','SUPER_USERS', false)`
-  );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

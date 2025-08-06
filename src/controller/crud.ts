@@ -21,8 +21,8 @@ export const all = (Entity, options = {}, transform = (t) => t) => async (
 ) => {
   try {
     // React admin list query components
-    const sort = JSON.parse(typeof request.query.sort === 'string' ? request.query.sort : '"id","ASC"');
-    const filter = JSON.parse(typeof request.query.filter === 'string' ? request.query.filter : '{}');
+    const sort = JSON.parse(request.query.sort || '["id","ASC"]');
+    const filter = JSON.parse(request.query.filter || "{}");
 
     // If where options passed through the combine with existing
     let where = {};
@@ -48,7 +48,7 @@ export const all = (Entity, options = {}, transform = (t) => t) => async (
     let range, skip, take;
     if (request.query.range) {
       // If range (admin ui)
-      range = JSON.parse(typeof request.query.range === 'string' ? request.query.range : '[0,9]');
+      range = JSON.parse(request.query.range || "[0,9]");
       (skip = range[0]), (take = range[1] - range[0] + 1);
     } else if (request.query.limit || request.query.offset) {
       // Else if limit/offset (app)
@@ -101,6 +101,15 @@ export const get = (Entity, options = {}, transform = (t) => t) => async (
   }
 };
 
+const indexObject = async (Entity, obj, indexByFn = defaultIndexByFn) => {
+  const indexBy = indexByFn(obj);
+  if (!indexBy.hasOwnProperty("visible") || indexBy["visible"]) {
+    await search.index(Entity, indexBy.id, indexBy.name, indexBy.type);
+  } else {
+    await search.unindex(Entity, indexBy.id);
+  }
+};
+
 export const add = (Entity, options = {}) => async (
   request: Request,
   response: Response
@@ -134,6 +143,9 @@ export const add = (Entity, options = {}) => async (
     }
 
     const newObj = await _get(Entity, result["id"], options);
+    if (options["searchIndex"]) {
+      await indexObject(Entity, newObj, options["indexByFn"]);
+    }
 
     return response.send(newObj);
   } catch ({ message }) {
@@ -153,6 +165,9 @@ export const del = (Entity, options = {}) => async (
     assert(obj !== undefined, "Entity not found");
 
     const result = await repository.remove(obj);
+    if (options["searchIndex"]) {
+      await search.unindex(Entity, id);
+    }
 
     return response.send({
       ...(result as object),
@@ -223,6 +238,9 @@ export const update = (Entity, options = {}) => async (
     }
 
     const newObj = await _get(Entity, id, options);
+    if (options["searchIndex"]) {
+      await indexObject(Entity, newObj, options["indexByFn"]);
+    }
 
     if (response) {
       return response.send(newObj);

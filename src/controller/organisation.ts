@@ -11,7 +11,7 @@ export const get = crud.get(Organisation, {
   relations: ["spaces"],
 });
 export const add = crud.add(Organisation, { required: ["name"] });
-export const del = crud.del(Organisation);
+export const del = crud.del(Organisation, options);
 export const update = crud.update(Organisation);
 
 export async function getUser(request: Request, response: Response) {
