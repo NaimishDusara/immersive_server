@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6"],
-    "target": "es5",
+    "target": "es2019",                      // or at least "es2017"
+    "lib": ["es2019"],                       // gives you modern features like async/await
     "module": "commonjs",
     "resolveJsonModule": true,
     "moduleResolution": "node",
@@ -10,7 +10,7 @@
     "experimentalDecorators": true,
     "sourceMap": false,
     "skipLibCheck": true,
-    "strict": true
+    "esModuleInterop": true
   },
   "exclude": ["**/*.spec.ts"]
 }

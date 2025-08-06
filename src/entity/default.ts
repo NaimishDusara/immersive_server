@@ -6,8 +6,8 @@ import { Column,
     UpdateDateColumn} from "typeorm";
 
 export default abstract class Default{
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
 
     @CreateDateColumn()
     createdAt!: Date;

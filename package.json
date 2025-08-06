@@ -4,26 +4,40 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/index.ts"
+    "start": "npm run migration:run && ts-node src/index.ts" ,
+    "migration:run": "ts-node ./node_modules/typeorm/cli migration:run -d src/ormconfig.ts",
+    "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -d src/ormconfig.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/aws-sdk": "^0.0.42",
     "@types/body-parser": "^1.19.6",
     "@types/compression": "^1.8.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/lodash": "^4.17.20",
     "@types/node": "^24.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.859.0",
+    "@aws-sdk/client-dynamodb": "^3.858.0",
+    "@aws-sdk/client-lambda": "^3.858.0",
+    "@aws-sdk/client-s3": "^3.858.0",
+    "@aws-sdk/client-ses": "^3.858.0",
     "body-parser": "^2.2.0",
     "compression": "^1.8.1",
     "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.25"
